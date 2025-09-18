@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24127" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="yokart_app_homepage" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YiX-Vb-7Ic">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="141"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="TGa-M0-trj">
+                                        <rect key="frame" x="16" y="75" width="361" height="50"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kcz-1f-xy0">
+                                                <rect key="frame" x="0.0" y="0.0" width="221" height="50"/>
+                                                <subviews>
+                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search for brands &amp; products" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vdd-Re-m9I">
+                                                        <rect key="frame" x="5" y="0.0" width="211" height="50"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                    </textField>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="Vdd-Re-m9I" firstAttribute="top" secondItem="kcz-1f-xy0" secondAttribute="top" id="fZ7-Ad-Zv6"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Vdd-Re-m9I" secondAttribute="trailing" constant="5" id="k7B-st-2l3"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Vdd-Re-m9I" secondAttribute="bottom" id="sGG-nt-FZa"/>
+                                                    <constraint firstItem="Vdd-Re-m9I" firstAttribute="leading" secondItem="kcz-1f-xy0" secondAttribute="leading" constant="5" id="uRG-0U-geH"/>
+                                                </constraints>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s5L-rQ-hFa">
+                                                <rect key="frame" x="231" y="0.0" width="60" height="50"/>
+                                                <color key="backgroundColor" systemColor="linkColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="60" id="dla-32-MDq"/>
+                                                </constraints>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="RFQ"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GwW-uh-LEn">
+                                                <rect key="frame" x="301" y="0.0" width="60" height="50"/>
+                                                <color key="backgroundColor" systemColor="secondaryLabelColor"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" image="cart" catalog="system"/>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="GwW-uh-LEn" firstAttribute="height" secondItem="s5L-rQ-hFa" secondAttribute="height" id="PNZ-EN-Aff"/>
+                                            <constraint firstItem="GwW-uh-LEn" firstAttribute="width" secondItem="s5L-rQ-hFa" secondAttribute="width" id="e7c-Lg-fS2"/>
+                                            <constraint firstAttribute="height" constant="50" id="wsK-sf-FD1"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="TGa-M0-trj" firstAttribute="top" secondItem="YiX-Vb-7Ic" secondAttribute="top" constant="75" id="DsA-ov-yog"/>
+                                    <constraint firstItem="TGa-M0-trj" firstAttribute="leading" secondItem="YiX-Vb-7Ic" secondAttribute="leading" constant="16" id="R00-Kd-Vzg"/>
+                                    <constraint firstAttribute="bottom" secondItem="TGa-M0-trj" secondAttribute="bottom" constant="16" id="kbX-Ar-A9F"/>
+                                    <constraint firstAttribute="trailing" secondItem="TGa-M0-trj" secondAttribute="trailing" constant="16" id="nAV-bt-vWi"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="QQF-Jm-J6Q">
+                                <rect key="frame" x="0.0" y="141" width="393" height="711"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="QQF-Jm-J6Q" secondAttribute="trailing" id="3Zx-vw-jzd"/>
+                            <constraint firstItem="YiX-Vb-7Ic" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="CIp-SE-niX"/>
+                            <constraint firstItem="QQF-Jm-J6Q" firstAttribute="top" secondItem="YiX-Vb-7Ic" secondAttribute="bottom" id="JJE-ma-g7D"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="YiX-Vb-7Ic" secondAttribute="trailing" id="d1J-fi-tm5"/>
+                            <constraint firstItem="YiX-Vb-7Ic" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="dlL-3y-uZ0"/>
+                            <constraint firstAttribute="bottom" secondItem="QQF-Jm-J6Q" secondAttribute="bottom" id="rzf-Ft-ryl"/>
+                            <constraint firstItem="QQF-Jm-J6Q" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="wrG-TV-QTr"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="btnCart" destination="GwW-uh-LEn" id="LHj-hr-eJd"/>
+                        <outlet property="btnRfq" destination="s5L-rQ-hFa" id="4Ql-ah-ICX"/>
+                        <outlet property="productListTableView" destination="QQF-Jm-J6Q" id="q8K-8F-6Q8"/>
+                        <outlet property="searchTextField" destination="Vdd-Re-m9I" id="RI5-Kh-h3M"/>
+                        <outlet property="searchView" destination="kcz-1f-xy0" id="2fX-JH-EWB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-106.10687022900763" y="5.6338028169014089"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="cart" catalog="system" width="128" height="102"/>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
