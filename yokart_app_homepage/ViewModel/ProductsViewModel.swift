@@ -9,72 +9,43 @@ import Foundation
 
 class ProductsViewModel {
     var onUpdate: (() -> Void)?
-    private(set) var productList: ProductListModel?
+    var productList: ProductListModel?
+    var productDetails: ProductDetailModel?
     
-    private(set) var currentPage = 1
-    private(set) var totalPageCount = 1
+    var currentPage = 1
+    var totalPageCount = 1
+    var currentDetailsPage = 1
+    var totalDetailsPageCount = 1
     private var isFetching = false
+    private var isFetchingDetails = false
     private let pageSize = 5
+    private let baseURL = "https://b2bdemo.yo-kart.com/app-api/2.4"
     
-    func fetchProductAPI(page: Int = 1) {
+    func fetchProductAPI(page: Int = 1, endpoint: String = "/home") {
         guard !isFetching else {
-            print("Already fetching page \(page)")
+            print("Already fetching products page \(page)")
             return
         }
         guard page <= totalPageCount else {
-            print("Page \(page) exceeds total page count \(totalPageCount)")
-            return
-        }
-        
-        guard let url = URL(string: "https://b2bdemo.yo-kart.com/app-api/2.4/home") else {
-            print("Invalid URL")
-            isFetching = false
             return
         }
         
         isFetching = true
-        print("Fetching page \(page) with pageSize \(pageSize)")
         
-        let boundary = "Boundary-\(UUID().uuidString)"
-        var body = Data()
+        let headers = [
+            "Cookie": "PHPSESSID=8a6cf85cbeb4114f412ad5607749882b; screenWidth=769"
+        ]
         
-        body += Data("--\(boundary)\r\n".utf8)
-        body += Data("Content-Disposition: form-data; name=\"page\"\r\n".utf8)
-        body += Data("\r\n\r\n\(page)\r\n".utf8)
+        let parameters = ["page": page]
         
-       
-        body += Data("--\(boundary)--\r\n".utf8)
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.setValue("PHPSESSID=8a6cf85cbeb4114f412ad5607749882b; screenWidth=769", forHTTPHeaderField: "Cookie")
-        request.httpBody = body
-        
-        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+        NetworkManager.shared.performRequest(urlString: baseURL + endpoint,
+                                           parameters: parameters,
+                                           headers: headers) { [weak self] (result: Result<ProductListModel, Error>) in
             guard let self = self else { return }
             self.isFetching = false
             
-            if let error = error {
-                print("Error fetching products: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let data = data else {
-                print("No data received")
-                return
-            }
-            
-            if let jsonString = String(data: data, encoding: .utf8) {
-                print("Raw JSON response for page \(page): \(jsonString)")
-            } else {
-                print("Failed to convert data to JSON string")
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let result = try decoder.decode(ProductListModel.self, from: data)
-                
+            switch result {
+            case .success(let result):
                 DispatchQueue.main.async {
                     if page == 1 {
                         self.productList = result
@@ -82,50 +53,114 @@ class ProductsViewModel {
                            let responsePageCount = Int(result.data?.pageCount ?? "1") {
                             self.currentPage = responsePage
                             self.totalPageCount = responsePageCount
-                            print("Pagination updated: currentPage = \(self.currentPage), totalPageCount = \(self.totalPageCount)")
-                        } else {
-                            print("Invalid page or pageCount in response")
                         }
-                        print("Page 1: Set productList with \(result.data?.collections?.count ?? 0) items")
                     } else {
                         if let newCollections = result.data?.collections {
                             self.productList?.data?.collections?.append(contentsOf: newCollections)
                         } else {
-                            print("No collections in response for page \(page)")
+                            print("No collections data for page \(page)")
                         }
                     }
                     
                     if let responsePage = Int(result.data?.page ?? "1"),
                        let responsePageCount = Int(result.data?.pageCount ?? "1") {
                         self.currentPage = responsePage
-//                        self.totalPageCount = responsePageCount
-                        print("Pagination updated: currentPage = \(self.currentPage), totalPageCount = \(self.totalPageCount)")
+                        print("Pagination updated currentPage = \(self.currentPage), totalPageCount = \(self.totalPageCount)")
                     } else {
                         print("Invalid page or pageCount in response")
                     }
                     
                     self.onUpdate?()
                 }
-            } catch {
-                print("Decoding error: \(error.localizedDescription)")
+                
+            case .failure(let error):
+                print("Error fetching products: \(error.localizedDescription)")
             }
         }
-        
-        task.resume()
     }
-
+    
+    func fetchProductDetailsAPI(productId: String, page: Int = 1, endpoint: String = "/products/view/") {
+        guard !isFetchingDetails else {
+            print("Already fetching product details page \(page)")
+            return
+        }
+        guard page <= totalDetailsPageCount else {
+            return
+        }
+        
+        isFetchingDetails = true
+        
+        let headers = [
+            "Cookie": "PHPSESSID=8a6cf85cbeb4114f412ad5607749882b; screenWidth=769"
+        ]
+        
+        let parameters = ["page": page] as [String : Any]
+        let fullEndpoint = endpoint + productId
+        print(baseURL + fullEndpoint)
+        NetworkManager.shared.performRequest(urlString: baseURL + fullEndpoint,
+                                           parameters: parameters,
+                                           headers: headers) { [weak self] (result: Result<ProductDetailModel, Error>) in
+            guard let self = self else { return }
+            self.isFetchingDetails = false
+            
+            switch result {
+            case .success(let result):
+                DispatchQueue.main.async {
+                    if page == 1 {
+                        self.productDetails = result
+                        if let responsePage = Int(result.data?.pageCount ?? "1"),
+                           let responsePageCount = Int(result.data?.pageCount ?? "1") {
+                            self.currentDetailsPage = responsePage
+                            self.totalDetailsPageCount = responsePageCount
+                        }
+                    } else {
+                        if let newDetails = result.data?.data {
+                            self.productDetails?.data?.data?.append(contentsOf: newDetails)
+                        } else {
+                            print("No details data for page \(page)")
+                        }
+                    }
+                    
+                    if let responsePage = Int(result.data?.pageCount ?? "1"),
+                       let responsePageCount = Int(result.data?.pageCount ?? "1") {
+                        self.currentDetailsPage = responsePage
+                    } else {
+                        print("Invalid page or pageCount in details response")
+                    }
+                    
+                    self.onUpdate?()
+                }
+                
+            case .failure(let error):
+                print("Error fetching product details: \(error.localizedDescription)")
+            }
+        }
+    }
     
     func loadNextPage() {
         let nextPage = currentPage + 1
         if nextPage <= totalPageCount && !isFetching {
-            print("Loading next page: \(nextPage)")
+            print("Loading next products page: \(nextPage)")
             fetchProductAPI(page: nextPage)
         } else {
-            print("Current: \(currentPage), Total: \(totalPageCount), isFetching: \(isFetching)")
+            print("Products - Current: \(currentPage), Total: \(totalPageCount), isFetching: \(isFetching)")
+        }
+    }
+    
+    func loadNextDetailsPage(productId: String) {
+        let nextPage = currentDetailsPage + 1
+        if nextPage <= totalDetailsPageCount && !isFetchingDetails {
+            fetchProductDetailsAPI(productId: productId, page: nextPage)
+        } else {
+            print("Product Details - Current: \(currentDetailsPage), Total: \(totalDetailsPageCount), isFetchingDetails: \(isFetchingDetails)")
         }
     }
     
     var isLoading: Bool {
         return isFetching
+    }
+    
+    var isLoadingDetails: Bool {
+        return isFetchingDetails
     }
 }

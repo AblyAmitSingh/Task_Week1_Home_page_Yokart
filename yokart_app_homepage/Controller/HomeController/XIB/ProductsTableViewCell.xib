@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24127" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -17,26 +18,46 @@
                 <rect key="frame" x="0.0" y="0.0" width="356" height="154"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="2Ge-Zm-raR">
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="XhN-yT-Kc0">
                         <rect key="frame" x="0.0" y="0.0" width="356" height="154"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="DGh-ta-phy">
-                            <size key="itemSize" width="128" height="128"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                    </collectionView>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="rMf-TA-BhP">
+                                <rect key="frame" x="0.0" y="0.0" width="356" height="30"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="tvy-D9-9xE"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="agg-Gi-5f3">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                            </collectionView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="2Ge-Zm-raR">
+                                <rect key="frame" x="0.0" y="30" width="356" height="124"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="DGh-ta-phy">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                            </collectionView>
+                        </subviews>
+                    </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="2Ge-Zm-raR" secondAttribute="trailing" id="CXJ-dw-qia"/>
-                    <constraint firstItem="2Ge-Zm-raR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="eaD-h2-QhN"/>
-                    <constraint firstItem="2Ge-Zm-raR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="opU-hi-Hj6"/>
-                    <constraint firstAttribute="bottom" secondItem="2Ge-Zm-raR" secondAttribute="bottom" id="tXf-n7-3ZI"/>
+                    <constraint firstItem="XhN-yT-Kc0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="FlU-j7-QiQ"/>
+                    <constraint firstAttribute="bottom" secondItem="XhN-yT-Kc0" secondAttribute="bottom" id="df5-nU-iAm"/>
+                    <constraint firstAttribute="trailing" secondItem="XhN-yT-Kc0" secondAttribute="trailing" id="qFK-kB-ojU"/>
+                    <constraint firstItem="XhN-yT-Kc0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ya7-wn-DDi"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="productCategoryCollectionView" destination="rMf-TA-BhP" id="aQg-IJ-NlF"/>
+                <outlet property="productCategoryHeightConstraint" destination="tvy-D9-9xE" id="EUu-sb-5nq"/>
                 <outlet property="productsCollectionView" destination="2Ge-Zm-raR" id="OXj-uE-u1j"/>
             </connections>
             <point key="canvasLocation" x="15.267175572519083" y="59.154929577464792"/>

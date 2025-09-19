@@ -16,7 +16,9 @@ class BannersTableViewCell: UITableViewCell {
             self.bannerImageCollectionView.reloadData()
         }
     }
+
     
+
     override func awakeFromNib() {
         super.awakeFromNib()
         registerCollectionCell()
@@ -43,6 +45,7 @@ extension BannersTableViewCell : UICollectionViewDelegate , UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCollectionViewCell", for: indexPath) as! ImageCollectionViewCell
+        
         if let data = bannerDataModel {
             cell.configureCell(data: data[indexPath.item])
         }
@@ -53,15 +56,15 @@ extension BannersTableViewCell : UICollectionViewDelegate , UICollectionViewData
         return 2
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 2
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        return 2
+//    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.bannerImageCollectionView.frame.size.width - 20, height: 180)
+        return CGSize(width: self.bannerImageCollectionView.frame.size.width - 20, height: 200)
     }
 }

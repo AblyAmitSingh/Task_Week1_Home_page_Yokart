@@ -55,15 +55,15 @@ enum CollectionType: String {
         case .trendyProducts:
             return 220
         case .bestsellingCategories:
-            return 240
+            return 280
         case .bestServices:
             return  120
         case .banners:
-            return 180
+            return 200
         case .premiumShops:
             return 300
         case .sunglassesBanner:
-            return 180
+            return 200
         }
     }
 }
@@ -134,7 +134,21 @@ class ViewController: UIViewController {
         let collection = sectionsDataModel[sectionIndex]
         print("See all: \(collection.collectionName ?? "")")
     }
+    
 }
+
+
+// MARK: - Product Tap Delegate Method
+extension ViewController : ProductTapEventDelegate {
+    func didSelectProduct(_ selectedProduct: Product) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let productDetailVC = storyboard.instantiateViewController(withIdentifier: "ProductDetailController") as! ProductDetailController
+        productDetailVC.productModel = selectedProduct
+        self.navigationController?.pushViewController(productDetailVC, animated: true)
+    }
+}
+
+
 
 // MARK: - UITableViewDelegate & UITableViewDataSource
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
@@ -167,6 +181,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         case .topProducts, .mostDemanded:
             if let productCell = cell as? ProductsTableViewCell, let products = collection.products, !products.isEmpty {
                 productCell.products = products
+                productCell.sectionType = collectionType
+                productCell.delegate = self
             }
         case .trendyProducts:
             if let productCell = cell as? TrendyProductsTableCell, let products = collection.products, !products.isEmpty {
@@ -178,10 +194,14 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                 bannerCell.banners = banners
             }
         case .bestsellingCategories:
-            if let productCell = cell as? ProductsTableViewCell, let products = collection.categories?.first?.products, !products.isEmpty {
+            if let productCell = cell as? ProductsTableViewCell, let products = collection.categories?[indexPath.row].products, !products.isEmpty {
                 productCell.products = products
+                if let categories = collection.categories, !categories.isEmpty {
+                    productCell.categories = categories
+                    productCell.sectionType = .bestsellingCategories
+                }
             }
-            
+         
         case .topBrands:
             if let categoryCell = cell as? ShopCategoryTableCell, let brandModel = collection.brands, !brandModel.isEmpty {
                 categoryCell.brandsDataModel = brandModel
@@ -209,13 +229,14 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let collection = sectionsDataModel[section]
         let collectionName = collection.collectionName ?? ""
         if let collectionType = CollectionType(rawValue: collectionName), collectionType == .categories || collectionType == .segmentBanners || collectionType == .banners || collectionType == .sunglassesBanner {
             return 0
         }
-        return 45
+        return 40
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

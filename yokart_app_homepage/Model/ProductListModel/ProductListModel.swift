@@ -32,10 +32,10 @@ struct Collection: Codable {
     let products: [Product]?
     let totProducts: String?
     let banners: Banners?
-    let brands: [Brand]? // Added for "Top Brands" collection
-    let totBrands: String? // Added for "Top Brands" collection
-    let shops: [Shop]? // Added for "Premium Shops" collection
-    let totShops: String? // Added for "Premium Shops" collection
+    let brands: [Brand]?
+    let totBrands: String?
+    let shops: [Shop]?
+    let totShops: String?
 
     enum CodingKeys: String, CodingKey {
         case collectionID = "collection_id"
