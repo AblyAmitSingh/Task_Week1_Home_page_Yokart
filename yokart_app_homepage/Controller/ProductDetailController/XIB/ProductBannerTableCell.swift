@@ -17,6 +17,13 @@ class ProductBannerTableCell: UITableViewCell {
         }
     }
     
+    var bannerDataModel:[BannerModel]? {
+        didSet{
+            self.productsCollectionView.reloadData()
+        }
+    }
+    
+    var sectionType: ProductSection = .banner
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -39,20 +46,42 @@ class ProductBannerTableCell: UITableViewCell {
 //  MARK: - UICollectionView Delegate , DataSource and FlowLayout Delegate Methods
 extension ProductBannerTableCell : UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.contentDataModel?.count ?? 0
+        return (sectionType == .banner ) ? self.bannerDataModel?.count ?? 0 : self.contentDataModel?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductBannerCollectionCell", for: indexPath) as! ProductBannerCollectionCell
-        if let data = contentDataModel {
-            cell.configureCell(data: data[indexPath.item])
+        if (sectionType == .banner ) {
+            if let data = bannerDataModel {
+                cell.configureCell(data: data[indexPath.item].bannerImageUrl, type: .banner)
+            }
+        } else {
+            if let data = contentDataModel {
+                cell.configureCell(data: data[indexPath.item].productImageUrl, type: .productImage)
+            }
         }
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 2
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        if sectionType == .productImage {
+            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        } else {
+            return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        }
+    }
 
     
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.productsCollectionView.frame.size.width, height: 300)
+        if sectionType == .productImage {
+            return CGSize(width: self.productsCollectionView.frame.size.width, height: 320)
+        } else {
+            return CGSize(width: self.productsCollectionView.frame.size.width - 20, height: 200)
+        }
     }
 }

@@ -44,8 +44,6 @@ import Foundation
 //}
 //
 
-
-
 struct ProductDetailModel: Codable {
     let status: String?
     let responseCode: String?
@@ -75,6 +73,10 @@ struct Content: Codable {
     var store: Store?
     var productPolicies: [ProductPolicy]?
     var productDescription: String?
+    var reviews: Reviews?
+    var similarProducts: [ProductDetail]?
+    var recommendedProducts: [ProductDetail]?
+    var banners: [BannerModel]?
 
     enum CodingKeys: String, CodingKey {
         case type, title, content
@@ -91,15 +93,31 @@ struct Content: Codable {
         store = nil
         productPolicies = nil
         productDescription = nil
+        reviews = nil
+        similarProducts = nil
+        recommendedProducts = nil
+        banners = nil
 
-        if let type = type {
+        guard let type = type else {
+            return
+        }
+
+        do {
             switch type {
-            case "2":
-                productImages = try container.decodeIfPresent([ProductImage].self, forKey: .content)
             case "1":
                 productDetail = try container.decodeIfPresent(ProductDetail.self, forKey: .content)
+            case "2":
+                productImages = try container.decodeIfPresent([ProductImage].self, forKey: .content)
             case "4":
                 productSpecifications = try container.decodeIfPresent([ProductSpecification].self, forKey: .content)
+            case "7":
+                similarProducts = try container.decodeIfPresent([ProductDetail].self, forKey: .content)
+            case "8":
+                recommendedProducts = try container.decodeIfPresent([ProductDetail].self, forKey: .content)
+            case "9":
+                reviews = try container.decodeIfPresent(Reviews.self, forKey: .content)
+            case "10":
+                banners = try container.decodeIfPresent([BannerModel].self, forKey: .content)
             case "13":
                 store = try container.decodeIfPresent(Store.self, forKey: .content)
             case "14":
@@ -107,8 +125,11 @@ struct Content: Codable {
             case "15":
                 productDescription = try container.decodeIfPresent(String.self, forKey: .content)
             default:
-                break
+                print("Unknown content type '\(type)'")
             }
+        } catch {
+            print("Decoding error for type '\(type)': \(error)")
+            throw error
         }
     }
 
@@ -118,12 +139,20 @@ struct Content: Codable {
         try container.encodeIfPresent(title, forKey: .title)
 
         switch type {
-        case "2":
-            try container.encodeIfPresent(productImages, forKey: .content)
         case "1":
             try container.encodeIfPresent(productDetail, forKey: .content)
+        case "2":
+            try container.encodeIfPresent(productImages, forKey: .content)
         case "4":
             try container.encodeIfPresent(productSpecifications, forKey: .content)
+        case "7":
+            try container.encodeIfPresent(similarProducts, forKey: .content)
+        case "8":
+            try container.encodeIfPresent(recommendedProducts, forKey: .content)
+        case "9":
+            try container.encodeIfPresent(reviews, forKey: .content)
+        case "10":
+            try container.encodeIfPresent(banners, forKey: .content)
         case "13":
             try container.encodeIfPresent(store, forKey: .content)
         case "14":
@@ -131,46 +160,8 @@ struct Content: Codable {
         case "15":
             try container.encodeIfPresent(productDescription, forKey: .content)
         default:
-            break
+            print("Unknown content type '\(type ?? "nil")' encoding")
         }
-    }
-}
-
-struct ProductImage: Codable {
-    let afileId: String?
-    let afileType: String?
-    let afileRecordId: String?
-    let afileRecordSubid: String?
-    let afileLangId: String?
-    let afileScreen: String?
-    let afilePhysicalPath: String?
-    let afileName: String?
-    let afileAttachmentType: String?
-    let afileAttributeTitle: String?
-    let afileAttributeAlt: String?
-    let afileAspectRatio: String?
-    let afileDisplayOrder: String?
-    let afileUpdatedAt: String?
-    let afileDownloadedTimes: String?
-    let productImageUrl: String?
-
-    enum CodingKeys: String, CodingKey {
-        case afileId = "afile_id"
-        case afileType = "afile_type"
-        case afileRecordId = "afile_record_id"
-        case afileRecordSubid = "afile_record_subid"
-        case afileLangId = "afile_lang_id"
-        case afileScreen = "afile_screen"
-        case afilePhysicalPath = "afile_physical_path"
-        case afileName = "afile_name"
-        case afileAttachmentType = "afile_attachment_type"
-        case afileAttributeTitle = "afile_attribute_title"
-        case afileAttributeAlt = "afile_attribute_alt"
-        case afileAspectRatio = "afile_aspect_ratio"
-        case afileDisplayOrder = "afile_display_order"
-        case afileUpdatedAt = "afile_updated_at"
-        case afileDownloadedTimes = "afile_downloaded_times"
-        case productImageUrl = "product_image_url"
     }
 }
 
@@ -244,7 +235,7 @@ struct ProductDetail: Codable {
     let totReviews: String?
     let selectedOptionValues: [String]?
     let selprodConditionTitle: String?
-    let ribbons: [String]?
+    let ribbons: [Badge]?
     let badges: [Badge]?
     let productWarrantyUnitLabel: String?
     let discount: String?
@@ -260,11 +251,15 @@ struct ProductDetail: Codable {
     let shippingDetails: [String: String]?
     let socialShareContent: SocialShareContent?
     let productDefaultImage: String?
+    let productImageUrl: String?
+    let shopLat: String?
+    let shopLng: String?
+    let prodcatCode: String?
 
     enum CodingKeys: String, CodingKey {
-        case availableInLocation, productId, selprodSku, productIdentifier, productName, productSellerId, productModel
-        case productType, prodcatId, prodcatName, productUpc, productIsbn, productShortDescription
-        case productDescription, selprodId, selprodUserId, selprodCode, selprodCondition, selprodPrice = "selprod_price"
+        case availableInLocation, productId, selprodSku, productIdentifier, productName = "product_name", productSellerId, productModel
+        case productType, prodcatId, prodcatName = "prodcat_name", productUpc, productIsbn, productShortDescription
+        case productDescription = "product_description", selprodId, selprodUserId, selprodCode, selprodCondition, selprodPrice = "selprod_price"
         case specialPriceFound, splpriceStartDate, splpriceEndDate, selprodTitle, selprodWarranty
         case selprodReturnPolicy, selprodComments, theprice, selprodStock, selprodThresholdStockLevel
         case inStock, brandId, brandName = "brand_name", brandShortDescription, userName, shopId, shopName
@@ -279,24 +274,211 @@ struct ProductDetail: Codable {
         case youtubeUrlThumbnail, productUrl, selprodReturnPolicies, selprodWarrantyPolicies
         case productCartBtn, productRfqBtn, codEnabled, isOutOfMinOrderQty, shippingDetails
         case socialShareContent, productDefaultImage, isInAnyWishlist = "is_in_any_wishlist"
+        case shopLat = "shop_lat", shopLng = "shop_lng", prodcatCode = "prodcat_code"
+        case productImageUrl = "product_image_url"
     }
 }
 
 struct Badge: Codable {
     let url: String?
     let badgeName: String?
+    let blinkcondId: String?
+    let blinkcondBadgeId: String?
+    let blinkcondPosition: String?
+    let badgeDisplayInside: String?
+    let badgeShapeType: String?
+    let badgeTextColor: String?
+    let badgeColor: String?
+    let badgelinkId: String?
+    let badgelinkRecordId: String?
+    let selprodId: String?
 
     enum CodingKeys: String, CodingKey {
         case url
         case badgeName = "badge_name"
+        case blinkcondId = "blinkcond_id"
+        case blinkcondBadgeId = "blinkcond_badge_id"
+        case blinkcondPosition = "blinkcond_position"
+        case badgeDisplayInside = "badge_display_inside"
+        case badgeShapeType = "badge_shape_type"
+        case badgeTextColor = "badge_text_color"
+        case badgeColor = "badge_color"
+        case badgelinkId = "badgelink_id"
+        case badgelinkRecordId = "badgelink_record_id"
+        case selprodId = "selprod_id"
     }
 }
 
-struct SocialShareContent: Codable {
-    let type: String?
-    let title: String?
-    let description: String?
-    let image: String?
+struct Reviews: Codable {
+    let withImages: ReviewWithImages?
+    let withoutImages: ReviewWithoutImages?
+
+    enum CodingKeys: String, CodingKey {
+        case withImages
+        case withoutImages
+    }
+}
+
+struct ReviewWithImages: Codable {
+    let imageReviewsPageCount: String?
+    let imageReviewsRecordCount: String?
+    let imageReviewsList: [ImageReview]?
+
+    enum CodingKeys: String, CodingKey {
+        case imageReviewsPageCount
+        case imageReviewsRecordCount
+        case imageReviewsList
+    }
+}
+
+struct ImageReview: Codable {
+    let spreviewId: String?
+    let userUpdatedOn: String?
+    let spreviewPostedbyUserId: String?
+    let userImage: String?
+    let images: [ReviewImage]?
+
+    enum CodingKeys: String, CodingKey {
+        case spreviewId = "spreview_id"
+        case userUpdatedOn = "user_updated_on"
+        case spreviewPostedbyUserId = "spreview_postedby_user_id"
+        case userImage = "user_image"
+        case images
+    }
+}
+
+struct ReviewImage: Codable {
+    let imageUrl: String?
+    let largeImageUrl: String?
+
+    enum CodingKeys: String, CodingKey {
+        case imageUrl
+        case largeImageUrl
+    }
+}
+
+struct ReviewWithoutImages: Codable {
+    let spreviewSelprodId: String?
+    let spreviewProductId: String?
+    let prodRating: String?
+    let totReviews: String?
+    let rated1: String?
+    let rated2: String?
+    let rated3: String?
+    let rated4: String?
+    let rated5: String?
+    let totRatings: String?
+    let totalType: String?
+    let ratingAspects: [RatingAspect]?
+
+    enum CodingKeys: String, CodingKey {
+        case spreviewSelprodId = "spreview_selprod_id"
+        case spreviewProductId = "spreview_product_id"
+        case prodRating = "prod_rating"
+        case totReviews
+        case rated1 = "rated_1"
+        case rated2 = "rated_2"
+        case rated3 = "rated_3"
+        case rated4 = "rated_4"
+        case rated5 = "rated_5"
+        case totRatings
+        case totalType
+        case ratingAspects
+    }
+}
+
+struct RatingAspect: Codable {
+    let spratingRatingtypeId: String?
+    let ratingtypeName: String?
+    let prodRating: String?
+
+    enum CodingKeys: String, CodingKey {
+        case spratingRatingtypeId = "sprating_ratingtype_id"
+        case ratingtypeName = "ratingtype_name"
+        case prodRating = "prod_rating"
+    }
+}
+
+struct BannerModel: Codable {
+    let bannerId: String?
+    let bannerBlocationId: String?
+    let bannerType: String?
+    let bannerRecordId: String?
+    let bannerUrl: String?
+    let bannerTarget: String?
+    let bannerTitle: String?
+    let promotionId: String?
+    let userBalance: String?
+    let dailyCost: String?
+    let weeklyCost: String?
+    let monthlyCost: String?
+    let totalCost: String?
+    let promotionBudget: String?
+    let promotionDuration: String?
+    let bannerUpdatedOn: String?
+    let promotionName: String?
+    let bannerImageUrl: String?
+    let bannerUrlType: String?
+
+    enum CodingKeys: String, CodingKey {
+        case bannerId = "banner_id"
+        case bannerBlocationId = "banner_blocation_id"
+        case bannerType = "banner_type"
+        case bannerRecordId = "banner_record_id"
+        case bannerUrl = "banner_url"
+        case bannerTarget = "banner_target"
+        case bannerTitle = "banner_title"
+        case promotionId = "promotion_id"
+        case userBalance
+        case dailyCost
+        case weeklyCost
+        case monthlyCost
+        case totalCost
+        case promotionBudget
+        case promotionDuration
+        case bannerUpdatedOn = "banner_updated_on"
+        case promotionName
+        case bannerImageUrl = "banner_image_url"
+        case bannerUrlType = "banner_url_type"
+    }
+}
+
+struct ProductImage: Codable {
+    let afileId: String?
+    let afileType: String?
+    let afileRecordId: String?
+    let afileRecordSubid: String?
+    let afileLangId: String?
+    let afileScreen: String?
+    let afilePhysicalPath: String?
+    let afileName: String?
+    let afileAttachmentType: String?
+    let afileAttributeTitle: String?
+    let afileAttributeAlt: String?
+    let afileAspectRatio: String?
+    let afileDisplayOrder: String?
+    let afileUpdatedAt: String?
+    let afileDownloadedTimes: String?
+    let productImageUrl: String?
+
+    enum CodingKeys: String, CodingKey {
+        case afileId = "afile_id"
+        case afileType = "afile_type"
+        case afileRecordId = "afile_record_id"
+        case afileRecordSubid = "afile_record_subid"
+        case afileLangId = "afile_lang_id"
+        case afileScreen = "afile_screen"
+        case afilePhysicalPath = "afile_physical_path"
+        case afileName = "afile_name"
+        case afileAttachmentType = "afile_attachment_type"
+        case afileAttributeTitle = "afile_attribute_title"
+        case afileAttributeAlt = "afile_attribute_alt"
+        case afileAspectRatio = "afile_aspect_ratio"
+        case afileDisplayOrder = "afile_display_order"
+        case afileUpdatedAt = "afile_updated_at"
+        case afileDownloadedTimes = "afile_downloaded_times"
+        case productImageUrl = "product_image_url"
+    }
 }
 
 struct ProductSpecification: Codable {
@@ -396,4 +578,11 @@ struct ProductPolicy: Codable {
     let title: String?
     let isSvg: String?
     let icon: String?
+}
+
+struct SocialShareContent: Codable {
+    let type: String?
+    let title: String?
+    let description: String?
+    let image: String?
 }

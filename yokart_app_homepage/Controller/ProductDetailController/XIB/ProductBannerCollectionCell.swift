@@ -17,9 +17,11 @@ class ProductBannerCollectionCell: UICollectionViewCell {
     }
 
     
-    func configureCell(data: ProductImage) {
-        if let iconURL = data.productImageUrl, let url = URL(string: iconURL) {
+    func configureCell(data: String?, type: ProductSection = .productImage) {
+        self.imgProduct.layer.cornerRadius = (type == .productImage) ? 0 : 10
+        if let iconURL = data, let url = URL(string: iconURL) {
             self.imgProduct.sd_setImage(with: url, placeholderImage: UIImage(systemName: "placeholder"), options: .highPriority, completed: nil)
         }
     }
+ 
 }
