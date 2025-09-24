@@ -67,7 +67,7 @@ class ProductsViewModel {
                         self.currentPage = responsePage
                         print("Pagination updated currentPage = \(self.currentPage), totalPageCount = \(self.totalPageCount)")
                     } else {
-                        print("Invalid page or pageCount in response")
+                        print("Invalid  pageCount in response")
                     }
                     
                     self.onUpdate?()

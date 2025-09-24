@@ -39,16 +39,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "EE75E5C8-9D0F-4EA7-A91D-B9B1CF9A3F64"
+            uuid = "010E71C8-7B70-4D65-9D49-8D862455E2BE"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "yokart_app_homepage/Utility/NetworkManager.swift"
+            filePath = "yokart_app_homepage/Controller/ProductDetailController/XIB/ProductBannerCollectionCell.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "performRequest(urlString:method:parameters:headers:completion:)"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "configureCell(data:type:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

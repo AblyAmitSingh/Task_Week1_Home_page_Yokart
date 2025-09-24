@@ -319,6 +319,7 @@ struct Reviews: Codable {
     }
 }
 
+
 struct ReviewWithImages: Codable {
     let imageReviewsPageCount: String?
     let imageReviewsRecordCount: String?

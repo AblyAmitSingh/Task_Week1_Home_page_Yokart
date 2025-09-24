@@ -71,7 +71,7 @@ extension ProductBannerTableCell : UICollectionViewDelegate , UICollectionViewDa
         if sectionType == .productImage {
             return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         } else {
-            return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+            return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         }
     }
 
@@ -79,9 +79,9 @@ extension ProductBannerTableCell : UICollectionViewDelegate , UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if sectionType == .productImage {
-            return CGSize(width: self.productsCollectionView.frame.size.width, height: 320)
+            return CGSize(width: self.productsCollectionView.frame.size.width, height: self.productsCollectionView.frame.size.height)
         } else {
-            return CGSize(width: self.productsCollectionView.frame.size.width - 20, height: 200)
+            return CGSize(width: self.productsCollectionView.frame.size.width - 20, height: 180)
         }
     }
 }

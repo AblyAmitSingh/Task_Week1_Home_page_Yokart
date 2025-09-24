@@ -56,13 +56,18 @@ enum ProductSection: String {
         case .shop:
             return UITableView.automaticDimension
         case .reviews:
-            return UITableView.automaticDimension
+            return 175
         case .similarProduct,.recommendedProducts:
-            return 240
+            return 280
         case .banner:
-            return 200
+            return 220
         }
     }
+}
+
+struct ReviewDataModel {
+    let title: String
+    let rating: String
 }
 
 class ProductDetailController: UIViewController {
@@ -80,9 +85,10 @@ class ProductDetailController: UIViewController {
     private let viewModel = ProductsViewModel()
     var productModel: Product?
     private var sectionsDataModel: [Content] = []
-    var isProductDetail: Bool = false
+    private var isProductDetail: Bool = false
     private var expandedIndexPaths: Set<IndexPath> = []
     
+    private var reviewDataModel = [ReviewDataModel]()
     // MARK: - UIView Lifecycle Delegate Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,9 +116,12 @@ class ProductDetailController: UIViewController {
         self.bttnStackView.applyLightShadowAndBorder(borderColor: .darkGray, borderWidth: 0)
     }
     
+    
+    //  MARK:  Register TableView Cells
     private func registerTableViewCell() {
         self.productDetailTableView.delegate = self
         self.productDetailTableView.dataSource = self
+        self.productDetailTableView.isPrefetchingEnabled = false
         self.productDetailTableView.register(UINib(nibName: "ProductBannerTableCell", bundle: nil), forCellReuseIdentifier: "ProductBannerTableCell")
         self.productDetailTableView.register(UINib(nibName: "ProductPricingCell", bundle: nil), forCellReuseIdentifier: "ProductPricingCell")
         self.productDetailTableView.register(UINib(nibName: "ProductDescriptionCell", bundle: nil), forCellReuseIdentifier: "ProductDescriptionCell")
@@ -123,7 +132,7 @@ class ProductDetailController: UIViewController {
         self.productDetailTableView.register(UINib(nibName: "ProductBannerTableCell", bundle: nil), forCellReuseIdentifier: "ProductBannerTableCell")
     }
     
-    
+    //  MARK: - Fetch Product Details
     private func fetchProductDetail() {
         viewModel.onUpdate = { [weak self] in
             guard let self = self else { return }
@@ -132,6 +141,16 @@ class ProductDetailController: UIViewController {
                 self.sectionsDataModel = collections.filter { content in
                     ProductSection(rawValue: content.type ?? "") != nil
                 }
+                let reviews = sectionsDataModel.filter{ $0.type == "9"}
+                if let reviewCollection = reviews.first,
+                   let reviews = reviewCollection.reviews {
+                    self.reviewDataModel.append(ReviewDataModel(title: "5",rating: reviews.withoutImages?.rated5 ?? "0"))
+                    self.reviewDataModel.append(ReviewDataModel(title: "4",rating: reviews.withoutImages?.rated4 ?? "0"))
+                    self.reviewDataModel.append(ReviewDataModel(title: "3",rating: reviews.withoutImages?.rated3 ?? "0"))
+                    self.reviewDataModel.append(ReviewDataModel(title: "2",rating: reviews.withoutImages?.rated2 ?? "0"))
+                    self.reviewDataModel.append(ReviewDataModel(title: "1",rating: reviews.withoutImages?.rated1 ?? "0"))
+                }
+                
             }
             DispatchQueue.main.async {
                 let title = "You are reliable electrician"
@@ -225,8 +244,9 @@ extension ProductDetailController: UITableViewDelegate, UITableViewDataSource {
                 categoryCell.configureCell(data: storeInfo)
             }
         case .reviews:
-            if let categoryCell = cell as? ReviewsTableCell, let storeInfo = collection.reviews {
-                categoryCell.configureCell(data: storeInfo)
+            if let categoryCell = cell as? ReviewsTableCell, let reviews = collection.reviews {
+                categoryCell.configureCell(data: reviews)
+                categoryCell.reviews = self.reviewDataModel
             }
         case .similarProduct:
             if let categoryCell = cell as? SimilarProductTableCell, let products = collection.similarProducts {
@@ -252,7 +272,7 @@ extension ProductDetailController: UITableViewDelegate, UITableViewDataSource {
         if let collectionType = ProductSection(rawValue: collectionName), collectionType == .productDescription || collectionType == .productSpecifications || collectionType == .similarProduct || collectionType == .recommendedProducts || collectionType == .reviews || collectionType == .shop{
             return 40
         } else {
-            return 0
+            return 0.1
         }
     }
     
@@ -276,6 +296,14 @@ extension ProductDetailController: UITableViewDelegate, UITableViewDataSource {
             return nil
         }
         
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 1 {
+            return 0
+        } else {
+            return 3
+        }
     }
     
     

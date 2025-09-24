@@ -316,9 +316,9 @@
                                     <constraint firstItem="M5l-oi-0dV" firstAttribute="top" secondItem="IGa-Yg-MX0" secondAttribute="top" id="yaN-vy-gyE"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="XeA-2I-JVi">
-                                <rect key="frame" x="0.0" y="186" width="393" height="561"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="3" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="XeA-2I-JVi">
+                                <rect key="frame" x="0.0" y="186" width="393" height="591"/>
+                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                             </tableView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="zZZ-Wc-92B">
                                 <rect key="frame" x="20" y="777" width="353" height="50"/>
@@ -357,7 +357,7 @@
                             <constraint firstItem="OQb-Vh-9Qd" firstAttribute="trailing" secondItem="IGa-Yg-MX0" secondAttribute="trailing" id="d6m-hu-PD3"/>
                             <constraint firstItem="IGa-Yg-MX0" firstAttribute="leading" secondItem="OQb-Vh-9Qd" secondAttribute="leading" id="gXv-8Q-I0g"/>
                             <constraint firstItem="IGa-Yg-MX0" firstAttribute="height" secondItem="GIY-Td-5j3" secondAttribute="height" multiplier="0.08" id="lhk-CL-qwM"/>
-                            <constraint firstItem="zZZ-Wc-92B" firstAttribute="top" secondItem="XeA-2I-JVi" secondAttribute="bottom" constant="30" id="msv-A6-1sU"/>
+                            <constraint firstItem="zZZ-Wc-92B" firstAttribute="top" secondItem="XeA-2I-JVi" secondAttribute="bottom" id="msv-A6-1sU"/>
                             <constraint firstAttribute="bottom" secondItem="zZZ-Wc-92B" secondAttribute="bottom" constant="25" id="pst-K0-2dY"/>
                             <constraint firstItem="XeA-2I-JVi" firstAttribute="trailing" secondItem="OQb-Vh-9Qd" secondAttribute="trailing" id="uAo-un-ypr"/>
                             <constraint firstItem="OQb-Vh-9Qd" firstAttribute="top" secondItem="IGa-Yg-MX0" secondAttribute="top" id="uYq-8L-v82"/>
@@ -411,6 +411,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray5Color">
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

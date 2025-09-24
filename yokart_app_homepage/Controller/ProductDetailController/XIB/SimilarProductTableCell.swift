@@ -52,7 +52,7 @@ extension SimilarProductTableCell : UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.productsCollectionView.frame.size.width / 2.5, height: 240)
+        return CGSize(width: self.productsCollectionView.frame.size.width / 2.5, height: 255)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

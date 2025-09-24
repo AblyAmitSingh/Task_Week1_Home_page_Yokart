@@ -70,7 +70,7 @@ enum CollectionType: String {
 
 
 class ViewController: UIViewController {
-    // MARK: - IBOutlets
+    // MARK: - UIView IBOutlets Connections
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var btnRfq: UIButton!
@@ -151,7 +151,7 @@ extension ViewController : ProductTapEventDelegate {
 
 
 // MARK: - UITableViewDelegate & UITableViewDataSource
-extension ViewController: UITableViewDelegate, UITableViewDataSource {
+extension ViewController: UITableViewDelegate & UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return sectionsDataModel.count
     }
@@ -166,7 +166,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         guard let collectionType = CollectionType(rawValue: collectionName) else {
             let cell = UITableViewCell()
-            cell.textLabel?.text = "Unknown Collection"
+            cell.textLabel?.text = ""
             return cell
         }
         
